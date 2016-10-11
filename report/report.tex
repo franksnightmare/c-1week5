@@ -1,0 +1,241 @@
+\documentclass[11pt]{article}
+
+\usepackage{a4wide,times}
+\usepackage[english]{babel}
+
+% -----------------------------------------------
+% especially use this for you code
+% -----------------------------------------------
+
+\usepackage{courier}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{tabularx}
+
+\definecolor{Gray}{gray}{0.95}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{language=C++,
+	basicstyle = \normalsize\ttfamily,   % the size and fonts that are used
+	tabsize = 2,                    % sets default tabsize
+	breaklines = true,              % sets automatic line breaking
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{mygreen}\ttfamily,
+	keepspaces=true,
+	showspaces=false,
+	showstringspaces=false,
+}
+
+\lstdefinestyle{bigtabs}
+{
+	basicstyle = \normalsize\ttfamily,
+	tasize = 8;
+}
+
+\begin{document}
+
+\title{Programming report \\
+       Week 4 Assignments C++
+}
+\date{\today}
+\author{Jaime Betancor Valado \\
+Christiaan Steenkist \\
+Remco Bos \\
+Diego Ribas Gomes
+}
+
+\maketitle
+
+\section*{Assignment 31, Pointer Questions}
+Here are the answers to the questions posed in assignment 31.
+
+\subsection*{1, Difference between pointer variables and arrays}
+The memory allocation of a pointer is dynamic and that of an array is static, can't be changed.
+The fundamental difference between them is that a pointer is a variable storing the memory addres of the variable to which it points, and the array is a chunk of variables allocated in one place of memory.
+
+\subsection*{2, Difference between pointer and reference variables}
+In the reference case we can't re-asign them after the assigment statement and in pointers we can make them point to any other place anytime.
+As an implication pointers can point to nothing but references need to refer to an object.
+We can say that a reference is an alias to another objec and a pointer stores the memory address of that object.
+
+\subsection*{3, How element [3][2] is reached}
+
+\subsubsection*{Part a, for variable int array[20][30]}
+In this case, the word array is an alias for the memory address of array[0][0] and when you write array[3][2] the compiler replace that labe with the corresponding memory address without the need of making further computations.
+
+\subsubsection*{Part b, for variable int *pointer[20]}
+When we tell the compiler to search for the location [3][2] the pointer addresses the memory location in which the first element is stored in memory, but for that it needs an intermediate step.
+We can say that the pointer points to a point that points to the first element of array.
+Finally the pointer arithmetic begins.
+In the figure below, [pointer] is the pointer label that points to the memory address of the ptr 0.
+The pointers ptr point to the first elements of the corresponding row.
+
+\begin{lstlisting}{style=bigtabs}
+			[pointer]
+			    |
+			    v    
+			[ptr 0]  -> [int 0] . . . [int 29]
+			    .
+			    .
+			    .
+			[prt 19] -> [int 0] . . . [int 29]
+\end{lstlisting}
+	    
+\subsection*{4, What does pointer arithmetic mean?}
+Is the operations that you can do with pointers. You can add, substract, increment or decrement them.
+For example if you have a type pointer and you want to locate the next type variable to which pointer points you can do ++pointer.
+
+\subsection*{5-1, Why accesing an element in an array using only a pointer is preferred over using an index expression.}
+They are preferred over index expression because they don't hide anything to the programer, they express better what the programmer intends and also because in the past the pointer expression was fast proccessed than the array index expression.
+
+\subsection*{5-2, Why is preferred to use pointer-loops over loops in which the control variable is a type variable?}
+When you are reading or writting an array inside a loop and you don't know when its last position is, is better to use a pointer comparison instead of an int comparison, the loop will stop when pointer points to a null termination.
+
+\section*{Assignment 32, Pointer and array arithmatic}
+Table \ref{tab:pointmath} has the arithmatic of the pointers and arrays as well as the descriptions of why it works out the way it does.
+
+\begin{table}[]
+\centering
+\caption{Pointer Arithmatic}
+\label{tab:pointmath}
+\begin{tabularx}{\linewidth}{|c|c|c|c|X|} \hline
+& Definition: & Rewrite: & Pointers: & Semantics: \\ \hline
+x. & int x[8]; & x[4] & *(x + 4) & x + 4 points to the location of the 4th int beyond x. That element is reached using the dereference operator (*) \\ \hline
+a. & int x[8]; & x[3] = x[2]; & *(x + 3) = *(x + 2) & x + 3 and x + 2 points to the location of the 3th and 2nd int beyond x. Then we assign the value of the 2nd one to the 3th one using the reference operator(*) \\ \hline
+b. & char *argv[8]; & cout \textless\textless argv[2]; & cout \textless\textless *(argv + 2); & We have a pointer to a pointer of a variable char (array of "strings").  (argv + 2) points to the  location of the 2nd set of chars beyond argv. And the print it. \\ \hline
+c. & int x[8]; & \&x[10] - \&x[3]; & 10 - 3 & In this case we	are substracting two memory addresses of the vector x in positiosn 10 and so the difference in memory positions will be 10 - 3 = 7. \\ \hline   			
+d. & char *argv[8]; & argv[0]++; & (*argv)++ & (argv + 0) points to the location of the set of characters argv. Then, in that "string" we increment a position and delete the first character of that "string". \\ \hline
+e. & char *argv[8]; & argv++[0]; & Error & This does not compile. \\ \hline
+f. & char *argv[8]; & ++argv[0]; & ++(*argv) & (argv + 0) points to the location of the set of characters argv. Then, in that "string" we increment a position and delete the first character of that "string". The difference between d. and e. is that the increment in this is after the statement. \\ \hline
+g. & char **argv; & ++argv[0][2]; & Error & Does not compile \\ \hline
+\end{tabularx}
+\end{table}
+
+\section*{Assignment 33, The Strings class}
+Because c-style strings are overrated we made a \texttt{Strings} class to store multiple strings for us in the form of char pointers.
+In \texttt{String} objects strings can be stored and retrieved using the \texttt{store} and \texttt{at} function.
+The \texttt{size} function shows how many strings the object contains.
+
+\subsection*{\texttt{at} functions}
+The \texttt{at} member functions should return modifiable or non-modifiable strings. In the case that a string literal is stored then when using at a non-modifiable string should be returned. When saving normal strings or arrays a modifiable string should be returned.
+
+\subsection*{Code Listings}
+\lstinputlisting[caption = \tt main.h]{src/a33/main.h}
+\lstinputlisting[caption = \tt main.cc]{src/a33/main.cc}
+
+\lstinputlisting[caption = \tt strings.ih]{src/a33/strings/strings.ih}
+\lstinputlisting[caption = \tt strings.h]{src/a33/strings/strings.h}
+\lstinputlisting[caption = \tt addstring1.cc]{src/a33/strings/addstring1.cc}
+\lstinputlisting[caption = \tt addstring2.cc]{src/a33/strings/addstring2.cc}
+\lstinputlisting[caption = \tt at1.cc]{src/a33/strings/at1.cc}
+\lstinputlisting[caption = \tt at2.cc]{src/a33/strings/at2.cc}
+\lstinputlisting[caption = \tt size.cc]{src/a33/strings/size.cc}
+\lstinputlisting[caption = \tt strings1.cc]{src/a33/strings/strings1.cc}
+\lstinputlisting[caption = \tt strings2.cc]{src/a33/strings/strings2.cc}
+
+\section*{Assignment 34, Strings swapping}
+For this exercise a member function was to be added to the \texttt{Strings} class that swaps the contents of two \texttt{Strings} objects. This is done by declaring storage variables in the scope of the member function and swapping the variables like swapping water between cups.
+
+\subsection*{Code Listings}
+\lstinputlisting[caption = \tt strings.h]{src/a34/strings/strings.h}
+\lstinputlisting[caption = \tt stringsswap.cc]{src/a34/strings/stringsswap.cc}
+
+\section*{Assignment 35, Pimpl}
+The goal of this exercise was to use and learn about the Pimpl method.
+
+\subsection*{The library}
+The command used to compile was \texttt{main.cc to main.o: g++ -Wall -std=c++14 -c main.cc}.
+The command used to make the library and link main.o was \texttt{ar rsv libdata.a main.o}.
+
+\subsection*{The makefile}
+\begin{lstlisting}
+program : display.o read.o data.ih data.h
+	g++ -Wall -std=c++14 -o program display.o read.o \
+    -L/home/user/Documents/Programming/C++-Part-1/Week-4/Ex35 -ldata -s
+	mv program ..
+
+display.o : data.h data.ih display.cc
+	g++ -Wall -std=c++14 -c display.cc
+
+read.o : data.h data.ih read.cc
+	g++ -Wall -std=c++14 -c read.cc
+\end{lstlisting}
+
+\subsection*{First results}
+Here are the results of the first library.
+\begin{itemize}
+\item Object 1: value is: 1
+\item Object 2: value is: 2
+\item Object 3: value is: 3
+\item Object 4: value is: 4
+\end{itemize}
+
+After uncommenting the definition of \texttt{d\_text} in data.h and its use in read.cc the program gave a segmentation fault.
+
+\subsection*{The Pimpl makefile}
+Note that for each situation a new library is made.
+\begin{lstlisting}
+program : display.o read.o dataconstrdestr.o data.ih data.h
+	g++ -Wall -std=c++14 -o program display.o read.o dataconstrdestr.o \
+	-L/home/user/Documents/Programming/C++-Part-1/Week-4/Ex35 -ldatapimpl2 -s
+	mv program ..
+
+dataconstrdestr.o : data.h data.ih dataconstrdestr.cc
+	g++ -Wall -std=c++14 -c dataconstrdestr.cc
+
+display.o : data.h data.ih display.cc
+	g++ -Wall -std=c++14 -c display.cc
+
+read.o : data.h data.ih read.cc
+	g++ -Wall -std=c++14 -c read.cc
+\end{lstlisting}
+
+\subsection*{Second results}
+With \texttt{d\_text} commented out.
+\begin{itemize}
+\item Object 1: value is: 1
+\item Object 2: value is: 2
+\item Object 3: value is: 3
+\item Object 4: value is: 4
+\end{itemize}
+
+With \texttt{d\_text} in the running code.
+\begin{itemize}
+\item Object 1: value is: 1
+\item Object 2: value is: 2
+\item Object 3: value is: 3
+\item Object 4: value is: 4
+\end{itemize}
+
+\subsection*{Code listings}
+\lstinputlisting[caption = \tt data.ih]{src/a35/data.ih}
+\lstinputlisting[caption = \tt data.h]{src/a35/data.h}
+\lstinputlisting[caption = \tt main.cc]{src/a35/main.cc}
+\lstinputlisting[caption = \tt display.cc]{src/a35/display.cc}
+\lstinputlisting[caption = \tt read.cc]{src/a35/read.cc}
+
+\section*{Assigment 36, Pimpl questions}
+Here are the answers to the questions of assignment 36 about assignment 35.
+
+\subsection*{When the program breaks down}
+The program breaks after creating the new library in step 2 of exercise 35 is because the calling code expects a smaller object  size than in the first step where the object was smaller without the additional private member. So memory corruption occurs.
+
+\subsection*{Why the program doesnt break down with the pointer implementation.}
+After using the pointer to implementation approach the program does not break because a pointer to the implementation of the private member uses the memory address and thus knows from the memory address how much memory the object takes up. Using no pointer and not changing the \texttt{main.o} (where an object is constructed) after adding a new private member, the main.o still thinks the object has the same size. This gives a memory corruption.
+
+\subsection*{World-famous library}
+You can design 2 classes, 1 for the functionality (i.e. public interface) and 1 for the data (data/private members). The data class can use the class with functionality and vice versa. Data members can be added, because you only need to make an object from the functional class. This one remains the same in size, so no memory corruption. Changing the data class does not alter the size of the object made from the functional class. The data class is only used for the functional class and the data members are only accessed by the functional class if necessary.
+
+\section*{Assignment 37, inverse identity}
+We were tasked with making a function that constructs the inverse identity of an array by using an array of pointers that point to the rows of a two-dimensional matrix. The function adheres to the problem description: two for loops, 1 parameter, 3 initialized pointer variables and one assignment statement.
+
+\subsection*{Code listings}
+\lstinputlisting[caption = \tt main.h]{src/a37/main.h}
+\lstinputlisting[caption = \tt main.cc]{src/a37/main.cc}
+\lstinputlisting[caption = \tt inv\_identity.cc]{src/a37/inv_identity.cc}
+
+\end{document}

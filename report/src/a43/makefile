@@ -7,4 +7,4 @@ STRINGS = strings1.o strings2.o addstring1.o addstring2.o size.o str.o capacity.
 	g++ -std=c++11 -Wall -c -o $@ $<
 
 main: main.cc $(STRINGS) main.h
-	g++ -std=c++11 -Wall -o main main.cc $(STRINGS) main.h
+	g++ -std=c++11 -Wall -lstdc++ -o main main.cc $(STRINGS) main.h

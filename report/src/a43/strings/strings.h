@@ -5,7 +5,7 @@
 
 class Strings
 {
-	char **d_str;
+	char **d_str = new char*[1];
 	size_t d_size = 0;
 	size_t d_capacity = 1;
 	

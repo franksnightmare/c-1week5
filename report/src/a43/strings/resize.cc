@@ -1,17 +1,16 @@
 #include "strings.ih"
 
 // If the array shrinks then the strings that fall
-// outside of the array will be deleted.
+// outside of the array will be ignored.
 void Strings::resize(size_t size)
-{	
-	if (size > d_size)
+{
+	if (size > d_capacity)
 	{
-		reserve(size);
-		return;
-	}
-	
-	for (size_t index = size; index != d_size; ++index)
-	{
-		delete d_str[index];
+		char **n_str = new char*[size];
+		for (size_t index = 0; index != d_size; ++index)
+			n_str[index] = d_str[index];
+		
+		delete[] d_str;
+		d_str = n_str;
 	}
 }

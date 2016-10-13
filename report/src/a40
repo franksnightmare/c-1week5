@@ -1,0 +1,39 @@
+void nowhere(char *character, char const *src)
+{
+    while((*character =! *src++))
+    {
+        if (*src == '\0')
+		    {
+			  std::cout << "Character is nowhere!\n";
+		    }
+	  }		
+}
+
+How strcpy works:
+To the function a C-string is passed as a pointer src pointing to a const char.
+A new pointer variable (pointer dst pointing to a char) which is empty as default
+takes the character where src is pointing to as first. 
+The while loop iterates over all characters where src is pointing at.
+Both pointer variables are incremented and the characters of src are copied
+one by one to the dst pointer variable. The incrementation of the pointer
+accesses the next character in the memory block. So first the first character
+in memory is copied to the first memory place of dst, then the second, etc.
+The loop terminates after the end of the C-string is reached, i.e. when '\0'
+is copied to dst.
+
+How nowhere works:
+A C-string is passed to the pointer variable src like the strcpy function.
+And a character(or multiple characters) is chosen by the user to see if it is
+nowhere in the C-string.
+This is done by checking if the character in memory given by the user is equal
+to a character in the C-string. Like strcpy the while loop terminates after '\0'
+is reached, and in this case it also terminates if the character is found, hence it
+is not nowhere in the C-string. If the character given by the user is nowhere in the
+C-string, an if-statement is used to check if the '\0' is reached, hence end of the
+C-string and the character is nowhere in the C-string.
+
+Why pointer-implementation is preferred:
+The pointer-implementation is preferred, because it is more efficient.
+If indices are used, then the program first goes to the index and then
+looks at the memory. A pointer goes directly to the memory and then performs
+its duty.

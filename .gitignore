@@ -1,0 +1,8 @@
+#Files to ignore
+
+# Compiled Object files
+*.o
+
+# Executables
+*.out
+*.exe

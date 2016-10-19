@@ -1,0 +1,9 @@
+void strcpy(char dst[], char const src[])
+{
+    int index = 0;
+    while((dst[index] = src[index]))
+    {
+        index++;
+    }              
+}
+

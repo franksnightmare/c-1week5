@@ -1,0 +1,175 @@
+\documentclass[11pt]{article}
+
+\usepackage{a4wide,times}
+\usepackage[english]{babel}
+
+% -----------------------------------------------
+% especially use this for you code
+% -----------------------------------------------
+
+\usepackage{courier}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{tabularx}
+
+\definecolor{Gray}{gray}{0.95}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{language=C++,
+	basicstyle = \normalsize\ttfamily,   % the size and fonts that are used
+	tabsize = 2,                    % sets default tabsize
+	breaklines = true,              % sets automatic line breaking
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{mygreen}\ttfamily,
+	keepspaces=true,
+	showspaces=false,
+	showstringspaces=false,
+}
+
+\lstdefinestyle{bigtabs}
+{
+	basicstyle = \normalsize\ttfamily,
+	tasize = 8;
+}
+
+\begin{document}
+
+\title{Programming report \\
+       Week 5 Assignments C++
+}
+\date{\today}
+\author{Jaime Betancor Valado \\
+Christiaan Steenkist \\
+Remco Bos \\
+Diego Ribas Gomes
+}
+
+\maketitle
+
+\section*{Assignment 40, \texttt{strcpy}}
+We were tasked with comparing a pointer and index implementations of \texttt{strcpy}
+
+\subsection*{How pointer implementation works}
+To the function a C-string is passed as a pointer\texttt{src} pointing to a const char.
+The \texttt{src} pointer assigns the character at the current incrementation to the same
+incrementation of \texttt{dst} (i.e. first element where \texttt{src} is pointing at is assigned to the first element
+where \texttt{dst} is pointing at, the next incrementation copies the second element, etc).
+The loop terminates after the end of the C-string is reached, i.e. when \texttt{'\textbackslash0'}.
+
+\subsection*{How index-using implementation works}
+An empty char array \texttt{dst} must be provided where the \texttt{src} char array can copy its elements to.
+In reality the arrays are pointers to a memory location where the characters are stored(\texttt{src}) or gets copied to(\texttt{dst}).
+The incrementation variable is instantiated as 0 to start at the first element. In the while-loop the first element
+of \texttt{dst} is assigned the value of the first element of \texttt{src}. Then the loop increments the index variable to copy the other
+elements to \texttt{dst}. Just like the pointer version, the while-loop terminates when the \texttt{'\textbackslash0'} character is reached.
+
+\subsection{Why pointers are preferred}
+It takes less code to do the pointer version, so it is also easier to read the code.
+It is faster and more efficient in memory, because only a memory address has to be provided instead of a whole array.
+This also gives pointers the ability to allocate memory dynamically, because it uses the elements at the address one by one.
+If an array is used, than all its elements have to be provided, then one by one the elements are copied(\texttt{src}) to the other array(\texttt{dst})
+which is empty at default before copying. So the array is copied and memory must be allocated for it. 
+The pointer version points at the element(\texttt{src}) in memory and assigns it to the memory position of the other pointer(\texttt{dst}).
+So using an array and iterating over its elements is slower and less efficient than using a pointer that take the element directly from memory.
+
+
+\subsection*{Code listings}
+\lstinputlisting[caption = \tt example.cc]{src/a40}
+
+\section*{Assignment 41, new and delete}
+Here are the various new and delete operators that can be used.
+
+\subsection*{1.1 \texttt{new}}
+To allocate primitive types or objects;
+\begin{lstlisting}
+	int *v1 = new int;		// an int pointer variable points to memory allocated by operator new
+	string *s1 = new string;	// a class-type object is allocated
+\end{lstlisting}
+
+\subsection*{1.2 \texttt{delete}}
+To release the memory of a single element allocated using new;
+\begin{lstlisting}
+	delete v1;
+	delete s1;
+\end{lstlisting}
+
+\subsection*{2.1 \texttt{new[]}}
+To allocate dynamic arrays, whose lifetime may exceed the lifetime of the function in which they were created;
+
+\begin{lstlisting}
+	int *intarr = new int[20];		// allocates 20 ints
+	string *stringarr = new string[10];	// allocates 10 class-type objects 'string'
+\end{lstlisting}
+
+\subsection*{2.2 \texttt{delete[]}}
+To call the destructor for each element in the array and return the memory pointed at by the pointer to the common pool;
+\begin{lstlisting}
+	delete[] intarr;
+	delete[] stringarr;
+\end{lstlisting}
+
+\subsection*{3.1 \texttt{operator new(sizeInBytes)}}
+To allocate raw memory, a block of memory for unspecified purpose;
+\begin{lstlisting}	
+	char *chPtr = static_cast<char *>(operator new(numberOfBytes)); // the raw memory returned by new is a void *, here assigned to a char * variable
+\end{lstlisting}
+
+\subsection*{3.2 \texttt{operator delete}}
+To return the raw memory allocated by operator new;
+\begin{lstlisting}
+	operator delete(chPtr);
+\end{lstlisting}
+
+\subsection*{4.1 placement new}
+To initialize an object or value into an existing block of memory;
+\begin{lstlisting}
+	string *sp = new(chPtr) std::string("example");	//installs a string into the block of memory created in the example from section 3.1
+\end{lstlisting}
+
+\subsection*{4.2 explicit destructor call}
+The destructor has to be called explicitly to destroy the object, and operator delete to deallocate the memory as in section 3.2;
+\begin{lstlisting}
+	sp->~string();
+\end{lstlisting}
+
+\section*{Assignment 42, \texttt{Strings} destructor}
+We were tasked with making a destructor for the \texttt{Strings} class.
+
+\subsection*{Code listings}
+
+\lstinputlisting[caption = \tt strings.h]{src/a42/strings/strings.h}
+\lstinputlisting[caption = \tt destructor.cc]{src/a42/strings/destructor.cc}
+
+\section*{Assignment 43, double pointers}
+We were tasked with changing the \texttt{Strings} from single pointer to double pointer.
+
+\subsection*{Code listings}
+\lstinputlisting[caption = \tt strings.h]{src/a43/strings/strings.h}
+\lstinputlisting[caption = \tt at1.cc]{src/a43/strings/at1.cc}
+\lstinputlisting[caption = \tt at2.cc]{src/a43/strings/at2.cc}
+\lstinputlisting[caption = \tt addstring.cc]{src/a43/strings/addstring.cc}
+\lstinputlisting[caption = \tt capacity.cc]{src/a43/strings/capacity.cc}
+\lstinputlisting[caption = \tt destructor.cc]{src/a43/strings/destructor.cc}
+\lstinputlisting[caption = \tt reserve.cc]{src/a43/strings/reserve.cc}
+\lstinputlisting[caption = \tt resize.cc]{src/a43/strings/resize.cc}
+\lstinputlisting[caption = \tt rawpointers.cc]{src/a43/strings/rawpointers.cc}
+
+\section*{Assignment 44, placement new}
+We were tasked with setting up the \texttt{Strings} class using placement new.
+
+\subsection*{Code listings}
+\lstinputlisting[caption = \tt strings.h]{src/a44/strings/strings.h}
+\lstinputlisting[caption = \tt at1.cc]{src/a44/strings/at1.cc}
+\lstinputlisting[caption = \tt at2.cc]{src/a44/strings/at2.cc}
+\lstinputlisting[caption = \tt addstring.cc]{src/a44/strings/addstring.cc}
+\lstinputlisting[caption = \tt capacity.cc]{src/a44/strings/capacity.cc}
+\lstinputlisting[caption = \tt destructor.cc]{src/a44/strings/destructor.cc}
+\lstinputlisting[caption = \tt reserve.cc]{src/a44/strings/reserve.cc}
+\lstinputlisting[caption = \tt resize.cc]{src/a44/strings/resize.cc}
+\lstinputlisting[caption = \tt rawpointers.cc]{src/a44/strings/rawstrings.cc}
+
+\end{document}

@@ -134,7 +134,7 @@ The destructor has to be called explicitly to destroy the object, followed by op
 \end{lstlisting}
 
 \section*{Assignment 42, \texttt{Strings} destructor}
-We were tasked with making a destructor for the \texttt{Strings} class.
+We are asked to prevent memory leaks in our implemented string class by submitting a destructor.
 
 \subsection*{Code listings}
 
@@ -143,6 +143,7 @@ We were tasked with making a destructor for the \texttt{Strings} class.
 
 \section*{Assignment 43, double pointers}
 We were tasked with changing the \texttt{Strings} from single pointer to double pointer.
+The class now uses a double pointer to store pointers to the strings which is doubled each time the amount of strings exceeds the capacity.
 
 \subsection*{Code listings}
 \lstinputlisting[caption = \tt strings.h]{src/a43/strings/strings.h}
@@ -157,6 +158,8 @@ We were tasked with changing the \texttt{Strings} from single pointer to double 
 
 \section*{Assignment 44, placement new}
 We were tasked with setting up the \texttt{Strings} class using placement new.
+Just as in assignment 43 the array is doubled each time the amount of strings exceeds the capacity.
+This implementation uses a single pointer variable and the same classes as the previous exercise but altered for placement new and single pointers.
 
 \subsection*{Code listings}
 \lstinputlisting[caption = \tt strings.h]{src/a44/strings/strings.h}

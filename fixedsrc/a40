@@ -1,12 +1,8 @@
-void nowhere(char *character, char const *src)
+void strcpy(char dst[], char const src[])
 {
-    while((*character =! *src++))
-    {
-        if (*src == '\0')
-		    {
-			  std::cout << "Character is nowhere!\n";
-		    }
-	  }		
+    int index = 0;
+    while((dst[index] = src[index]))
+        index++;      
 }
 
 How strcpy works:

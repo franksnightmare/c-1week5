@@ -81,58 +81,55 @@ So using an array and iterating over its elements is slower and less efficient t
 \lstinputlisting[caption = \tt example.cc]{src/a40}
 
 \section*{Assignment 41, new and delete}
-Here are the various new and delete operators that can be used.
+Here are the variants of new/delete.
 
-\subsection*{1.1 \texttt{new}}
-To allocate primitive types or objects;
+\subsection*{1 new/delete}
+To allocate primitive types or objects; eg:
 \begin{lstlisting}
 	int *v1 = new int;		// an int pointer variable points to memory allocated by operator new
 	string *s1 = new string;	// a class-type object is allocated
 \end{lstlisting}
 
-\subsection*{1.2 \texttt{delete}}
-To release the memory of a single element allocated using new;
+To release the memory of a single element allocated using new; eg:
 \begin{lstlisting}
 	delete v1;
 	delete s1;
 \end{lstlisting}
 
-\subsection*{2.1 \texttt{new[]}}
-To allocate dynamic arrays, whose lifetime may exceed the lifetime of the function in which they were created;
-
+\subsection*{2 new[]/delete[]}
+To allocate dynamic arrays, whose lifetime may exceed the lifetime of the function in which they were created; eg:
 \begin{lstlisting}
 	int *intarr = new int[20];		// allocates 20 ints
 	string *stringarr = new string[10];	// allocates 10 class-type objects 'string'
 \end{lstlisting}
 
-\subsection*{2.2 \texttt{delete[]}}
-To call the destructor for each element in the array and return the memory pointed at by the pointer to the common pool;
+To call the destructor for each element in the array and return the memory pointed at by the pointer to the common pool; eg:
 \begin{lstlisting}
 	delete[] intarr;
 	delete[] stringarr;
 \end{lstlisting}
 
-\subsection*{3.1 \texttt{operator new(sizeInBytes)}}
-To allocate raw memory, a block of memory for unspecified purpose;
-\begin{lstlisting}	
-	char *chPtr = static_cast<char *>(operator new(numberOfBytes)); // the raw memory returned by new is a void *, here assigned to a char * variable
+\subsection*{3 operator new(sizeInBytes)/operator delete}
+To allocate raw memory, a block of memory for unspecified purpose; eg:
+\begin{lstlisting}
+	// the raw memory returned by new is a void *, here assigned to a string * variable
+	string *stPtr = static_cast<string *>(operator new(10 * sizeof(std::string)));
 \end{lstlisting}
 
-\subsection*{3.2 \texttt{operator delete}}
-To return the raw memory allocated by operator new;
+To return the raw memory allocated by operator new; eg:
 \begin{lstlisting}
 	operator delete(chPtr);
 \end{lstlisting}
 
-\subsection*{4.1 placement new}
-To initialize an object or value into an existing block of memory;
+\subsection*{4 placement new}
+To initialize an object or value into an existing block of memory; eg:
 \begin{lstlisting}
-	string *sp = new(chPtr) std::string("example");	//installs a string into the block of memory created in the example from section 3.1
+	//installs a string into the block of memory created in the example from section 3.1
+	string *sp = new(chPtr) std::string("example");
 \end{lstlisting}
 
-\subsection*{4.2 explicit destructor call}
-The destructor has to be called explicitly to destroy the object, and operator delete to deallocate the memory as in section 3.2;
-\begin{lstlisting}
+The destructor has to be called explicitly to destroy the object, followed by operator delete to deallocate the memory as in section 3.2, eg:
+\begin{lstlisting}	
 	sp->~string();
 \end{lstlisting}
 

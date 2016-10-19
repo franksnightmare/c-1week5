@@ -21,9 +21,12 @@ The incrementation variable is instantiated as 0 to start at the first element. 
 of dst is assigned the value of the first element of src. Then the loop increments the index variable to copy the other
 elements to dst. Just like the pointer version, the while-loop terminates when the '/0' character is reached.
 
---------------------------------------------------------------------------------------
-Why pointer-implementation is preferred:
-The pointer-implementation is preferred, because it is more efficient.
-If indices are used, then the program first goes to the index and then
-looks at the memory. A pointer goes directly to the memory and then performs
-its duty.
+Why pointers are preferred:
+It takes less code to do the pointer version, so it is also easier to read the code.
+It is faster and more efficient in memory, because only a memory address has to be provided instead of a whole array.
+This also gives pointers the ability to allocate memory dynamically, because it uses the elements at the address one by one.
+If an array is used, than all its elements have to be provided, then one by one the elements are copied(src) to the other array(dst)
+which is empty at default before copying. So the array is copied and memory must be allocated for it. 
+The pointer version points at the element(src) in memory and assigns it to the memory position of the other pointer(dst).
+So using an array and iterating over its elements is slower and less efficient than using a pointer that take the element directly from memory.
+

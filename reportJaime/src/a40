@@ -1,0 +1,10 @@
+void nowhere(char *character, char const *src)
+{
+    while((*character =! *src++))
+    {
+        if (*src == '\0')
+		    {
+			  std::cout << "Character is nowhere!\n";
+		    }
+	  }		
+}

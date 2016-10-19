@@ -1,35 +1,33 @@
 #ifndef STRINGS_H
 #define STRINGS_H
 
-#include<iostream>
+#include <cstddef>
+#include <string>
 
 class Strings
 {
-	char **d_str = static_cast<char **>(operator new(sizeof(char *)));
+	std::string *d_str = static_cast<std::string *>(
+					operator new(1 * sizeof(std::string)));
 	size_t d_size = 0;
 	size_t d_capacity = 1;
 	
-	void reserve(size_t size);
-	
 	public:
-		~Strings();
 		Strings(size_t argc, char **argv);
 		Strings(char **environ);
+		~Strings();
 		
-		char **str();
 		size_t size();
 		size_t capacity();
 		
-		void setStr(char **str);
-		void setSize(size_t size);
 		void resize(size_t size);
+		void reserve(size_t size);
 		
-		char *at(size_t index);
-		char const *at(size_t index) const;
-		
-		void addString(std::string newString);
 		void addString(char *charArray);
-		size_t calcCapacity(size_t size);
+		
+		std::string at(size_t index);
+		std::string const at(size_t index) const;
+		
+		std::string *rawStrings(size_t amount);
 };
 
 #endif

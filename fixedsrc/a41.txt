@@ -1,48 +1,45 @@
 The variants of new/delete are:
 
-1.1 new:
+1. new:
 	to allocate primitive types or objects; eg:
 
 	int *v1 = new int;		// an int pointer variable points to memory allocated by operator new
 	string *s1 = new string;	// a class-type object is allocated
 
-1.2 delete:
+2. delete:
 	to release the memory of a single element allocated using new; eg:
 
 	delete v1;
 	delete s1;
 
 
-2.1 new[]:
+3. new[]:
 	to allocate dynamic arrays, whose lifetime may exceed the lifetime of the function in which they were created; eg:
 
 	int *intarr = new int[20];		// allocates 20 ints
 	string *stringarr = new string[10];	// allocates 10 class-type objects 'string'
 
-2.2 delete[]:
+4. delete[]:
 	to call the destructor for each element in the array and return the memory pointed at by the pointer to the common pool; eg:
 
 	delete[] intarr;
 	delete[] stringarr;
 
 
-3.1 operator new(sizeInBytes):
+5. operator new(sizeInBytes):
 	to allocate raw memory, a block of memory for unspecified purpose; eg:
 	
-	string *chPtr = static_cast<string *>(operator new(numberOfBytes)); // the raw memory returned by new is a void *, here assigned to a string * variable
+	char *chPtr = static_cast<char *>(operator new(numberOfBytes)); // the raw memory returned by new is a void *, here assigned to a char * variable
 
-3.2 operator delete:
+6. operator delete:
 	to return the raw memory allocated by operator new; eg:
 
 	operator delete(chPtr);
 
-4.1 placement new:
+7. placement new:
 	to initialize an object or value into an existing block of memory; eg:
 	
-	string *sp = new(chPtr) std::string("example");	//installs a string into the block of memory created in the example from section 3.1
-	
-4.2 explicit destructor call
-	the destructor has to be called explicitly to destroy the object, and operator delete to deallocate the memory as in section 3.2, eg:
-	
-	sp->~string();
-	
+	Type *new(void *memory) Type(arguments);	//memory is a block of memory of at least sizeof(Type) bytes and Type(arguments) is any constructor of the class Type;
+
+	(Memory allocated this way is returned by explicitly calling the object's destructor)
+
